@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengumuman Kelulusan | SMKS TI Bulukumba</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background-color: #e5e7eb;
+            background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .backdrop {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+        }
+        .card-snbp { background-color: #262626; } 
+        .header-lulus { background-color: #005b9f; } 
+        .header-gagal { background-color: #dc2626; } 
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-center p-4 backdrop">
+
+    <div id="searchContainer" class="bg-white w-full max-w-md rounded-xl p-8 shadow-2xl transition-all duration-500">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-black text-gray-900 tracking-tight">PENGUMUMAN KELULUSAN</h1>
+            <p class="text-gray-500 text-sm mt-1 font-semibold">SMKS Teknologi Informatika Bulukumba</p>
+            <p class="text-gray-500 text-xs">Tahun Ajaran 2025/2026</p>
+        </div>
+
+        <form id="formPencarian" class="space-y-5">
+            <div>
+                <label for="nis" class="block text-sm font-bold text-gray-700 mb-1">Nomor Induk Siswa (NIS)</label>
+                <input type="text" id="nis" required placeholder="Masukkan NIS Anda" 
+                    class="block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005b9f] focus:border-[#005b9f] transition-colors">
+            </div>
+            
+            <div>
+                <label for="tgl_lahir" class="block text-sm font-bold text-gray-700 mb-1">Tanggal Lahir</label>
+                <input type="date" id="tgl_lahir" required 
+                    class="block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005b9f] focus:border-[#005b9f] transition-colors">
+            </div>
+
+            <button type="submit" 
+                class="w-full flex justify-center py-3 px-4 rounded-lg shadow-md text-sm font-bold text-white bg-[#005b9f] hover:bg-blue-800 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005b9f]">
+                Lihat Hasil
+            </button>
+        </form>
+        
+        <div id="errorMessage" class="hidden mt-4 p-3 bg-red-100 text-center text-sm text-red-700 font-bold rounded-lg">
+            Data tidak ditemukan. Periksa kembali NIS dan Tanggal Lahir.
+        </div>
+    </div>
+
+    <div id="resultContainer" class="hidden w-full max-w-4xl card-snbp rounded-xl overflow-hidden shadow-2xl text-left border border-gray-700 transition-all duration-500">
+        
+        <div id="headerResult" class="header-lulus px-6 py-5 md:px-8 md:py-6 flex justify-between items-center">
+            <h2 class="text-white text-lg md:text-xl font-bold tracking-wide leading-snug" id="resultStatus">
+                SELAMAT! ANDA DINYATAKAN LULUS<br>SMKS TAHUN 2026
+            </h2>
+            <div class="hidden sm:block text-right">
+               <h1 class="text-white font-black text-3xl italic tracking-tighter">SMKS<span class="text-blue-200">TI</span></h1>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8 text-white relative">
+            <div class="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
+                <div>
+                    <h3 class="text-2xl md:text-4xl font-black uppercase mb-1 tracking-tight" id="resNama">NAMA SISWA</h3>
+                    <p class="text-base md:text-lg text-gray-300 uppercase font-semibold" id="resJurusan">JURUSAN</p>
+                    <p class="text-sm text-gray-400">SMKS Teknologi Informatika Bulukumba</p>
+                </div>
+                
+                <div class="bg-white p-2 rounded-lg shrink-0 hidden sm:block">
+                    <img src="" alt="QR Code" id="qrCode" class="w-20 h-20 md:w-24 md:h-24 object-cover">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-gray-600 pt-6">
+                <div class="md:col-span-2 grid grid-cols-2 gap-4 md:gap-6">
+                    <div>
+                        <p class="text-[11px] md:text-xs text-blue-400 font-semibold mb-1">Tanggal Lahir</p>
+                        <p class="text-sm md:text-base font-bold" id="resTglLahir">DD/MM/YYYY</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] md:text-xs text-blue-400 font-semibold mb-1">Nomor Induk Siswa (NIS)</p>
+                        <p class="text-sm md:text-base font-bold" id="resNisGrid">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] md:text-xs text-blue-400 font-semibold mb-1">Nilai Rata-Rata</p>
+                        <p class="text-sm md:text-base font-bold text-green-400" id="resNilai">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] md:text-xs text-blue-400 font-semibold mb-1">Predikat</p>
+                        <p class="text-sm md:text-base font-bold text-yellow-400" id="resPredikat">-</p>
+                    </div>
+                </div>
+
+                <div class="bg-white text-gray-900 p-4 rounded-md shadow-md flex flex-col justify-center" id="actionBox">
+                    <p class="font-bold text-sm mb-1" id="actionTitle">Silakan lakukan pengambilan SKL dan IJAZAH.</p>
+                    <p class="text-xs text-gray-600 mb-2" id="actionDesc">Informasi Persyaratan dan Pengambilan dapat menghubungi kepala TU</p>
+                    <a href="#" class="text-xs font-bold text-[#005b9f] hover:underline" id="actionLink">Gufran Syarif, S.Pd.</a>
+                </div>
+            </div>
+
+            <div class="mt-8 text-[10px] md:text-xs text-gray-500 space-y-2 border-t border-gray-700 pt-4">
+                <p>Status kelulusan Anda sebagai siswa akan secara resmi dicantumkan pada ijazah dan rapor akhir.</p>
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="btnKembaliContainer" class="hidden mt-6">
+        <button onclick="kembali()" class="px-6 py-2 bg-gray-800/80 text-white font-semibold rounded-full hover:bg-gray-900 border border-gray-600 transition-all text-sm backdrop-blur-md">
+            &larr; Kembali ke Pencarian
+        </button>
+    </div>
+
+    <script src="data.js"></script>
+    
+    <script>
+        const formPencarian = document.getElementById('formPencarian');
+        const searchContainer = document.getElementById('searchContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const errorMessage = document.getElementById('errorMessage');
+        const btnKembaliContainer = document.getElementById('btnKembaliContainer');
+
+        function formatTanggal(tanggal) {
+            const [year, month, day] = tanggal.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        formPencarian.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const inputNis = document.getElementById('nis').value.trim();
+            const inputTglLahir = document.getElementById('tgl_lahir').value; 
+            
+            const siswa = dataKelulusan.find(s => s.nis === inputNis && s.tgl_lahir === inputTglLahir);
+
+            if (siswa) {
+                errorMessage.classList.add('hidden');
+                searchContainer.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+                btnKembaliContainer.classList.remove('hidden');
+
+                // Isi Data (Baris pengisian resNisHeader sudah dihapus)
+                document.getElementById('resNisGrid').innerText = siswa.nis; // NIS tetap di dalam grid
+                document.getElementById('resNama').innerText = siswa.nama;
+                document.getElementById('resJurusan').innerText = siswa.jurusan;
+                document.getElementById('resTglLahir').innerText = formatTanggal(siswa.tgl_lahir);
+                document.getElementById('resNilai').innerText = siswa.nilai;
+                document.getElementById('resPredikat').innerText = siswa.predikat;
+
+                // QR Code
+                document.getElementById('qrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${siswa.nis}-${siswa.nama.replace(/\s/g, '')}`;
+
+                // Update UI Status
+                const headerResult = document.getElementById('headerResult');
+                if (siswa.status === "LULUS") {
+                    headerResult.className = "header-lulus px-6 py-5 md:px-8 md:py-6 flex justify-between items-center";
+                    document.getElementById('resultStatus').innerHTML = "SELAMAT! ANDA DINYATAKAN LULUS<br>SMKS TAHUN 2026";
+                } else {
+                    headerResult.className = "header-gagal px-6 py-5 md:px-8 md:py-6 flex justify-between items-center";
+                    document.getElementById('resultStatus').innerHTML = "MOHON MAAF, ANDA DINYATAKAN<br>TIDAK LULUS";
+                }
+            } else {
+                errorMessage.classList.remove('hidden');
+            }
+        });
+
+        function kembali() {
+            document.getElementById('nis').value = '';
+            document.getElementById('tgl_lahir').value = '';
+            resultContainer.classList.add('hidden');
+            btnKembaliContainer.classList.add('hidden');
+            searchContainer.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
