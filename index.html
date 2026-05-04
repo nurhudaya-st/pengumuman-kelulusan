@@ -59,11 +59,8 @@
         
         <div id="headerResult" class="header-lulus px-6 py-5 md:px-8 md:py-6 flex justify-between items-center">
             <h2 class="text-white text-lg md:text-xl font-bold tracking-wide leading-snug" id="resultStatus">
-                SELAMAT! ANDA DINYATAKAN LULUS<br>SMKS TAHUN 2026
+                SELAMAT! ANDA DINYATAKAN LULUS<br>
             </h2>
-            <div class="hidden sm:block text-right">
-               <h1 class="text-white font-black text-3xl italic tracking-tighter">SMKS<span class="text-blue-200">TI</span></h1>
-            </div>
         </div>
 
         <div class="p-6 md:p-8 text-white relative">
@@ -74,8 +71,8 @@
                     <p class="text-sm text-gray-400">SMKS Teknologi Informatika Bulukumba</p>
                 </div>
                 
-                <div class="bg-white p-2 rounded-lg shrink-0 hidden sm:block">
-                    <img src="" alt="QR Code" id="qrCode" class="w-20 h-20 md:w-24 md:h-24 object-cover">
+                <div class="bg-transparent p-2 rounded-lg shrink-0 hidden sm:block">
+                    <img src="Logo_SMKTI.png" alt="Logo Sekolah" class="w-20 h-20 md:w-24 md:h-24 object-contain">
                 </div>
             </div>
 
@@ -99,16 +96,15 @@
                     </div>
                 </div>
 
-                <div class="bg-white text-gray-900 p-4 rounded-md shadow-md flex flex-col justify-center" id="actionBox">
-                    <p class="font-bold text-sm mb-1" id="actionTitle">Silakan lakukan pengambilan SKL dan IJAZAH.</p>
-                    <p class="text-xs text-gray-600 mb-2" id="actionDesc">Informasi Persyaratan dan Pengambilan dapat menghubungi kepala TU</p>
-                    <a href="#" class="text-xs font-bold text-[#005b9f] hover:underline" id="actionLink">Gufran Syarif, S.Pd.</a>
+                <div class="flex items-center justify-center md:justify-end">
+                    <div class="bg-white p-3 rounded-xl shadow-lg w-fit h-fit" id="actionBox">
+                        <img src="" alt="Status QR" id="resQrcodeAction" class="w-28 h-28 object-contain block">
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-8 text-[10px] md:text-xs text-gray-500 space-y-2 border-t border-gray-700 pt-4">
+            <div class="mt-8 text-[10px] md:text-xs text-gray-500 space-y-2 border-t border-gray-700 pt-4 text-center">
                 <p>Status kelulusan Anda sebagai siswa akan secara resmi dicantumkan pada ijazah dan rapor akhir.</p>
-                
             </div>
         </div>
     </div>
@@ -146,22 +142,21 @@
                 resultContainer.classList.remove('hidden');
                 btnKembaliContainer.classList.remove('hidden');
 
-                // Isi Data (Baris pengisian resNisHeader sudah dihapus)
-                document.getElementById('resNisGrid').innerText = siswa.nis; // NIS tetap di dalam grid
+                document.getElementById('resNisGrid').innerText = siswa.nis; 
                 document.getElementById('resNama').innerText = siswa.nama;
                 document.getElementById('resJurusan').innerText = siswa.jurusan;
                 document.getElementById('resTglLahir').innerText = formatTanggal(siswa.tgl_lahir);
                 document.getElementById('resNilai').innerText = siswa.nilai;
                 document.getElementById('resPredikat').innerText = siswa.predikat;
 
-                // QR Code
-                document.getElementById('qrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${siswa.nis}-${siswa.nama.replace(/\s/g, '')}`;
+                // Set QR Code untuk menampilkan status LULUS / TIDAK LULUS saat di-scan
+                const qrCodeAction = document.getElementById('resQrcodeAction');
+                qrCodeAction.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${siswa.status}`;
 
-                // Update UI Status
                 const headerResult = document.getElementById('headerResult');
                 if (siswa.status === "LULUS") {
                     headerResult.className = "header-lulus px-6 py-5 md:px-8 md:py-6 flex justify-between items-center";
-                    document.getElementById('resultStatus').innerHTML = "SELAMAT! ANDA DINYATAKAN LULUS<br>SMKS TAHUN 2026";
+                    document.getElementById('resultStatus').innerHTML = "SELAMAT! ANDA DINYATAKAN LULUS<br>";
                 } else {
                     headerResult.className = "header-gagal px-6 py-5 md:px-8 md:py-6 flex justify-between items-center";
                     document.getElementById('resultStatus').innerHTML = "MOHON MAAF, ANDA DINYATAKAN<br>TIDAK LULUS";
